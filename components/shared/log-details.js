@@ -1,11 +1,22 @@
-import React from 'react'
-import { View, StyleSheet, Text, Pressable } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, StyleSheet, Text, Pressable, ScrollView } from 'react-native'
 import color from '../../assets/color'
 import font from '../../assets/font'
+import RequestHeaders from './request-headers'
 import StatusCode from './status-code'
 
-const LogDetails = ({ navigation, log }) => {
-  const behaviors = {}
+const LogDetails = ({ navigation, log, logType }) => {
+  const [isDropedDown, setIsDropedDown] = useState(null)
+
+  const behaviors = {
+    dropdown() {
+      if (isDropedDown) {
+        setIsDropedDown(false)
+      } else {
+        setIsDropedDown(true)
+      }
+    },
+  }
 
   return (
     <View style={styles.container}>
@@ -20,15 +31,8 @@ const LogDetails = ({ navigation, log }) => {
         </View>
       </View>
       <View style={styles.body}>
-        <Text style={styles.textLight}>Request Header</Text>
-        {log.headers.map((header, key) => {
-          return (
-            <Text style={styles.headersList} key={key}>
-              <Text style={styles.headerName}>{header.name}: </Text>
-              <Text style={styles.headerValue}>{header.value}</Text>
-            </Text>
-          )
-        })}
+        <RequestHeaders header={log.headers} headerType="Request" />
+        <RequestHeaders header={log.headers} headerType="Response" />
       </View>
     </View>
   )

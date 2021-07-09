@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Text, Pressable } from 'react-native'
 import color from '../../assets/color'
 import font from '../../assets/font'
 import LogDetails from '../shared/log-details'
 import LogsList from '../shared/logs-list'
+import axios from 'axios'
+import Constants from 'expo-constants'
 
 const Logs = ({ navigation }) => {
   const fakeDatas = [
@@ -79,6 +81,17 @@ const Logs = ({ navigation }) => {
       endpoint: 'www.samueljoly.xyz/hosts',
     },
   ]
+  const [logs, setLogs] = useState(null)
+
+  useEffect(() => {
+    const backendUrl = Constants.manifest.extra.backendUrl
+    axios
+      .get(`${backendUrl}/log`)
+      .then((response) => {
+        setLogs(response.data)
+      })
+      .catch((error) => error)
+  }, [])
 
   const behaviors = {
     navigate: {
@@ -101,9 +114,8 @@ const Logs = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* <View style={styles.test}></View> */}
-      <LogsList logs={fakeDatas} />
-      <LogDetails log={fakeDatas[0]}></LogDetails>
+      {logs ? <LogsList logs={logs} /> : <Text>Loading</Text>}
+      <LogDetails log={fakeDatas[0]} />
     </View>
   )
 }
