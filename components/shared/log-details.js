@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, Text, Pressable, ScrollView } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  Text,
+  Pressable,
+  ScrollView,
+  Dimensions,
+} from 'react-native'
 import color from '../../assets/color'
 import font from '../../assets/font'
 import RequestHeaders from './request-headers'
@@ -20,19 +27,18 @@ const LogDetails = ({ navigation, log, logType }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.textLight}>
-        <View style={[styles.textLight, styles.head]}>
-          <Text style={styles.textLight}>{log.ip}</Text>
-          <Text style={styles.textLight}>{log.method}</Text>
+      <View style={[styles.textLight, styles.head]}>
+        <View style={[styles.textLight, styles.row]}>
+          <Text style={styles.textLight}>{log.hostname}</Text>
+          <Text style={styles.textLight}>{log.request_method}</Text>
         </View>
-        <View style={[styles.textLight, styles.head]}>
-          <Text style={styles.textLight}>{log.endpoint}</Text>
-          <StatusCode code={log.responseCode} />
+        <View style={[styles.textLight, styles.row]}>
+          <Text style={styles.textLight}>{log.request_referer}</Text>
+          <StatusCode code={log.request_status} />
         </View>
       </View>
       <View style={styles.body}>
-        <RequestHeaders header={log.headers} headerType="Request" />
-        <RequestHeaders header={log.headers} headerType="Response" />
+        <RequestHeaders log={log} headerType="Request" />
       </View>
     </View>
   )
@@ -40,15 +46,24 @@ const LogDetails = ({ navigation, log, logType }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     width: '100%',
     backgroundColor: color['primary-darker-1'],
     paddingTop: 10,
+    height: '45%',
+    maxHeight: '45%',
+  },
+  head: {
+    height: '20%',
+    maxHeight: '20%',
+  },
+  body: {
+    height: '80%',
+    maxHeight: '80%',
   },
   textLight: {
     color: color['text-light'],
   },
-  head: {
+  row: {
     textAlign: 'justify',
     flexDirection: 'row',
     justifyContent: 'space-between',
