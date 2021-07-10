@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar'
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
+import { createDrawerNavigator } from '@react-navigation/drawer'
 
 import color from './assets/color'
 
@@ -24,16 +25,18 @@ const navigatorTheme = {
     notification: 'rgb(255, 69, 58)',
   },
 }
+const Drawer = createDrawerNavigator()
+
 const App = () => {
   return (
     <NavigationContainer theme={navigatorTheme}>
-      <Stack.Navigator>
-        <Stack.Screen name="login" component={Auth} />
-        <Stack.Screen name="navigate" component={Navigate} />
-        <Stack.Screen name="logs" component={Logs} />
-        <Stack.Screen name="manage site" component={ManageSite} />
-        <Stack.Screen name="performance" component={Performance} />
-      </Stack.Navigator>
+      <Drawer.Navigator>
+        <Drawer.Screen name="login" component={Auth} />
+        <Drawer.Screen name="navigate" component={Navigate} />
+        <Drawer.Screen name="logs" component={Logs} />
+        <Drawer.Screen name="manage site" component={ManageSite} />
+        <Drawer.Screen name="performance" component={Performance} />
+      </Drawer.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>
   )
