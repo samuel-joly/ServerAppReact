@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, Pressable, Text, ScrollView } from 'react-native'
-import color from '../../assets/color'
 import { AntDesign } from '@expo/vector-icons'
+import color from '@assets/color'
 
 const RequestHeaders = ({ log, headerType }) => {
   const [isDropedDown, setIsDropedDown] = useState(null)

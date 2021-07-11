@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, Text, TextInput, Pressable } from 'react-native'
-import color from '../../assets/color'
-import font from '../../assets/font'
+import color from '@assets/color'
+import font from '@assets/font'
 
 const Auth = ({ navigation }) => {
   const behaviors = {

@@ -2,18 +2,16 @@ import 'react-native-gesture-handler'
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 
-import color from './assets/color'
+import color from '@assets/color'
 
-import Logs from './components/pages/logs'
-import Auth from './components/pages/auth'
-import Navigate from './components/pages/navigate'
-import ManageSite from './components/pages/manage-site'
-import Performance from './components/pages/performance'
+import Logs from '@views/logs'
+import Auth from '@views/auth'
+import Navigate from '@views/navigate'
+import ManageSite from '@views/manage-site'
+import Performance from '@views/performance'
 
-const Stack = createStackNavigator()
 const navigatorTheme = {
   dark: true,
   colors: {

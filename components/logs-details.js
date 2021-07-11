@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import {
-  View,
-  StyleSheet,
-  Text,
-  Pressable,
-  ScrollView,
-  Dimensions,
-} from 'react-native'
-import color from '../../assets/color'
-import font from '../../assets/font'
-import RequestHeaders from './request-headers'
-import StatusCode from './status-code'
+import { View, StyleSheet, Text } from 'react-native'
+import color from '@assets/color'
+import font from '@assets/font'
+import RequestHeaders from '@components/request-headers'
+import StatusCode from '@components/status-code'
 
 const LogDetails = ({ navigation, log, logType }) => {
   const [isDropedDown, setIsDropedDown] = useState(null)

@@ -7,8 +7,8 @@ import {
   Pressable,
   Dimensions,
 } from 'react-native'
-import color from '../../assets/color'
-import StatusCode from './status-code'
+import color from '@assets/color'
+import StatusCode from '@components/status-code'
 
 const LogsList = ({ logs, setSelectedLog }) => {
   return (

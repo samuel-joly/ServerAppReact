@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import color from '../../assets/color'
+import color from '@assets/color'
 
 const StatusCode = ({ code }) => {
   const behaviors = {}

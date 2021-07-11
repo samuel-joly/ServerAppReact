@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Text, Pressable, Dimensions } from 'react-native'
-import color from '../../assets/color'
-import font from '../../assets/font'
-import LogDetails from '../shared/log-details'
-import LogsList from '../shared/logs-list'
+import color from '@assets/color'
+import font from '@assets/font'
+import LogDetails from '@components/logs-details'
+import LogsList from '@components/logs-list'
 import axios from 'axios'
 import Constants from 'expo-constants'
 

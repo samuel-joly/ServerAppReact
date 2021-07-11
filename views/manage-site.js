@@ -1,9 +1,9 @@
 import React from 'react'
 import { View, StyleSheet, Text, Pressable } from 'react-native'
-import color from '../../assets/color'
-import font from '../../assets/font'
+import color from '@assets/color'
+import font from '@assets/font'
 
-const Navigate = ({ navigation }) => {
+const ManageSite = ({ navigation }) => {
   const behaviors = {
     navigate: {
       logs() {
@@ -21,18 +21,6 @@ const Navigate = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Pressable onPress={behaviors.navigate.logs}>
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>Show logs</Text>
-        </View>
-      </Pressable>
-
-      <Pressable onPress={behaviors.navigate.performance}>
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>Performance</Text>
-        </View>
-      </Pressable>
-
-      <Pressable onPress={behaviors.navigate.manageSite}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>Manage website</Text>
         </View>
@@ -65,4 +53,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Navigate
+export default ManageSite
