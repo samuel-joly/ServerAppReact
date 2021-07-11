@@ -5,7 +5,7 @@ import font from '@assets/font'
 import RequestHeaders from '@components/request-headers'
 import StatusCode from '@components/status-code'
 
-const LogDetails = ({ navigation, log, logType }) => {
+const LogsDetails = ({ navigation, log, logType }) => {
   const [isDropedDown, setIsDropedDown] = useState(null)
 
   const behaviors = {
@@ -75,4 +75,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default LogDetails
+export default LogsDetails

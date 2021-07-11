@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Animated, Dimensions, View, Text } from 'react-native'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
-import LogMain from '@components/logs-main'
+import LogsMain from '@components/logs-main'
+import LogsFilter from '../components/logs-filter'
 
 const Logs = ({ navigation }) => {
-  const renderRightActions = (progress, dragX) => {
-    return (
-      <View>
-        <Text style={styles.leftAction}>cc</Text>
-      </View>
-    )
+  const renderFilterPanel = (progress, dragX) => {
+    return <LogsFilter />
   }
 
   return (
-    <Swipeable renderRightActions={renderRightActions}>
-      <LogMain />
+    <Swipeable renderRightActions={renderFilterPanel}>
+      <LogsMain />
     </Swipeable>
   )
 }

@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Text, Pressable, Dimensions } from 'react-native'
 import color from '@assets/color'
 import font from '@assets/font'
-import LogDetails from '@components/logs-details'
+import LogsDetails from '@components/logs-details'
 import LogsList from '@components/logs-list'
 import axios from 'axios'
 import Constants from 'expo-constants'
 
-const LogMain = ({ navigation }) => {
+const LogsMain = ({ navigation }) => {
   const [selectedLog, setSelectedLog] = useState(null)
   const [logs, setLogs] = useState(null)
 
@@ -55,7 +55,7 @@ const LogMain = ({ navigation }) => {
       ) : (
         <Text>Loading</Text>
       )}
-      {selectedLog ? <LogDetails log={logs[selectedLog]} /> : <></>}
+      {selectedLog ? <LogsDetails log={logs[selectedLog]} /> : <></>}
     </View>
   )
 }
@@ -83,4 +83,4 @@ const styles = StyleSheet.create({
   // },
 })
 
-export default LogMain
+export default LogsMain
