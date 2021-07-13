@@ -4,6 +4,7 @@ import color from '../../assets/color'
 import font from '../../assets/font'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import {useFonts, Arvo} from '@expo-google-fonts/arvo'
 
 async function getServiceDatabase(token=null) {
   return await axios.get('/database',
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.primary,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    padding:'20px'
+    padding:20
   },
   services:{
     flex: 1,
