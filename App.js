@@ -1,18 +1,24 @@
 import 'react-native-gesture-handler'
 import { StatusBar } from 'expo-status-bar'
-import React from 'react'
+import React, { useEffect, useState, Text }from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import color from './assets/color'
 
-import Logs from './components/pages/logs'
-import Auth from './components/pages/auth'
-import Navigate from './components/pages/navigate'
-import ManageSite from './components/pages/manage-site'
-import Performance from './components/pages/performance'
+import {Logs, Auth, Navigate, ManageSite, Performance} from './components/pages/'
+
+import { UserContext } from "./UserContext";
+import { UserState } from "./UserState";
 
 const Stack = createStackNavigator()
+import axios from "axios";
+
+axios.defaults.baseURL = "http://82.66.65.201:5555";
+//axios.defaults.baseURL = "http://ServerApp.local";
+axios.defaults.timeout = 3000;
+
 const navigatorTheme = {
   dark: true,
   colors: {
@@ -24,18 +30,40 @@ const navigatorTheme = {
     notification: 'rgb(255, 69, 58)',
   },
 }
+
 const App = () => {
+  const [logged, setLogged] = React.useState(false);
+
+  useEffect(() => {
+    setLogged( async () => {
+       try {
+         const token = JSON.parse(await AsyncStorage.getItem('user')).token;
+        setLogged(token != null ? true : false);
+      } catch(e) {
+        // error reading value
+      }
+    });
+  }, []);
+
   return (
-    <NavigationContainer theme={navigatorTheme}>
-      <Stack.Navigator>
-        <Stack.Screen name="login" component={Auth} />
-        <Stack.Screen name="navigate" component={Navigate} />
-        <Stack.Screen name="logs" component={Logs} />
-        <Stack.Screen name="manage site" component={ManageSite} />
-        <Stack.Screen name="performance" component={Performance} />
-      </Stack.Navigator>
-      <StatusBar style="auto" />
-    </NavigationContainer>
+    <UserState>
+      <UserContext.Consumer>
+        {({state}) => {
+          return (
+            <NavigationContainer theme={navigatorTheme}>
+              <Stack.Navigator>
+                {logged != true ? (<Stack.Screen name="login" component={Auth} />) : null }
+                <Stack.Screen name="navigate" component={Navigate} />
+                <Stack.Screen name="logs" component={Logs} />
+                <Stack.Screen name="manage site" component={ManageSite} />
+                <Stack.Screen name="performance" component={Performance} />
+              </Stack.Navigator>
+              <StatusBar style="auto" />
+            </NavigationContainer>
+          )
+        }}
+      </UserContext.Consumer>
+    </UserState>
   )
 }
 

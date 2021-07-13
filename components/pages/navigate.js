@@ -13,7 +13,7 @@ const Navigate = ({ navigation }) => {
         navigation.navigate('performance')
       },
       manageSite() {
-        navigation.navigate('manageSite')
+        navigation.navigate('manage site')
       },
     },
   }

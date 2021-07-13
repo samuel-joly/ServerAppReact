@@ -1,31 +1,57 @@
-import React from 'react'
-import { View, StyleSheet, Text, TextInput, Pressable } from 'react-native'
+import React, {useContext, useState} from 'react'
+import { ActivityIndicator, View, StyleSheet, Text, TextInput, Pressable } from 'react-native'
 import color from '../../assets/color'
 import font from '../../assets/font'
+import {UserContext} from '../../UserContext'
 
 const Auth = ({ navigation }) => {
-  const behaviors = {
-    login() {
-      navigation.navigate('navigate')
-    },
-  }
+  const {signIn} = React.useContext(UserContext);
+  const [email, setEmail] = React.useState("administrator");
+  const [password, setPassword] = React.useState('administrator');
+  const [signingin, setSigningin] = React.useState(false);
+  const [userError, setUsernameError] = React.useState(null);
+  const [passwordError, setPasswordError] = React.useState(null);
+
   return (
     <View style={styles.container}>
-      <View style={styles.formControl}>
-        <Text style={styles.text}>Email</Text>
-        <TextInput style={styles.textInput}></TextInput>
-      </View>
+      {!signingin ? (
+        <>
+          {userError ? <Text style={[{color:"#ff0000"}]}>{userError}</Text> : null}
+          <View style={styles.formControl}>
+            <Text style={styles.text}>Email</Text>
+            <TextInput style={styles.textInput} onChangeText={setEmail}></TextInput>
+          </View>
 
-      <View style={styles.formControl}>
-        <Text style={styles.text}>Password</Text>
-        <TextInput style={styles.textInput}></TextInput>
-      </View>
+          {passwordError ? <Text style={[{color:"#ff0000"}]}>{passwordError}</Text> : null}
+          <View style={styles.formControl}>
+            <Text style={styles.text}>Password</Text>
+            <TextInput style={styles.textInput} onChangeText={setPassword}></TextInput>
+          </View>
 
-      <Pressable onPress={behaviors.login}>
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>Login</Text>
-        </View>
-      </Pressable>
+          <Pressable
+            onPress={
+              async () => {
+                setSigningin(true);
+                try {
+                  await signIn(email, password);
+                  setSigningin(false);
+                  navigation.navigate('navigate');
+                } catch (e){
+                  console.log(e.response)
+                  setUsernameError(e.response.data.messages.errors[0]?.username);
+                  setPasswordError(e.response.data.messages.errors[0]?.password);
+                  setSigningin(false);
+                }
+              }
+            }>
+            <View style={styles.button}>
+              <Text style={styles.buttonText}>Login</Text>
+            </View>
+          </Pressable>
+        </>
+      ) : (
+        <ActivityIndicator size='large' color="#ffffff"/>
+      )}
     </View>
   )
 }
