@@ -1,9 +1,9 @@
 import React from 'react'
 import { View, StyleSheet, Text, Pressable } from 'react-native'
-import color from '../../assets/color'
-import font from '../../assets/font'
+import color from '@assets/color'
+import font from '@assets/font'
 
-const Performance = ({ navigation }) => {
+const Navigate = ({ navigation }) => {
   const behaviors = {
     navigate: {
       logs() {
@@ -13,7 +13,7 @@ const Performance = ({ navigation }) => {
         navigation.navigate('performance')
       },
       manageSite() {
-        navigation.navigate('manageSite')
+        navigation.navigate('manage site')
       },
     },
   }
@@ -22,7 +22,19 @@ const Performance = ({ navigation }) => {
     <View style={styles.container}>
       <Pressable onPress={behaviors.navigate.logs}>
         <View style={styles.button}>
+          <Text style={styles.buttonText}>Show logs</Text>
+        </View>
+      </Pressable>
+
+      <Pressable onPress={behaviors.navigate.performance}>
+        <View style={styles.button}>
           <Text style={styles.buttonText}>Performance</Text>
+        </View>
+      </Pressable>
+
+      <Pressable onPress={behaviors.navigate.manageSite}>
+        <View style={styles.button}>
+          <Text style={styles.buttonText}>Manage website</Text>
         </View>
       </Pressable>
     </View>
@@ -53,4 +65,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Performance
+export default Navigate

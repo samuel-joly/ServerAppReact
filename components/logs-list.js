@@ -1,15 +1,22 @@
 import React from 'react'
-import { StyleSheet, View, Text, ScrollView } from 'react-native'
-import color from '../../assets/color'
-import StatusCode from './status-code'
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  Pressable,
+  Dimensions,
+} from 'react-native'
+import color from '@assets/color'
+import StatusCode from '@components/status-code'
 
-const LogsList = ({ logs }) => {
+const LogsList = ({ logs, setSelectedLog }) => {
   return (
-    <ScrollView style={styles.listHeight}>
-      <View style={styles.container}>
-        {logs.map((log, key) => {
-          return (
-            <View style={styles.row} key={key}>
+    <ScrollView style={[styles.listHeight, styles.container]}>
+      {logs.map((log, key) => {
+        return (
+          <Pressable onPress={() => setSelectedLog(key)} key={key}>
+            <View style={styles.row}>
               <Text style={[styles.text, styles.thickColumn]}>
                 {log.hostname}
               </Text>
@@ -24,9 +31,9 @@ const LogsList = ({ logs }) => {
                 {log.request_referer}
               </Text>
             </View>
-          )
-        })}
-      </View>
+          </Pressable>
+        )
+      })}
     </ScrollView>
   )
 }
@@ -34,24 +41,18 @@ const LogsList = ({ logs }) => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    flex: 1,
+    backgroundColor: color.primary,
+    maxHeight: '100%',
   },
-
-  listHeight: {
-    height: 20,
-  },
-
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 5,
   },
-
   text: {
     color: color['text-light'],
   },
-
   thickColumn: {
     width: '30%',
   },

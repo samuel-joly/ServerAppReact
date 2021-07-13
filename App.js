@@ -2,17 +2,14 @@ import 'react-native-gesture-handler'
 import { StatusBar } from 'expo-status-bar'
 import React, { useEffect, useState, Text }from 'react'
 import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { createDrawerNavigator } from '@react-navigation/drawer'
 import color from './assets/color'
-
-import {Logs, Auth, Navigate, ManageSite, Performance} from './components/pages/'
-
+import {Logs, Auth, Navigate, ManageSite, Performance} from 'views/'
 import { UserContext } from "./UserContext";
 import { UserState } from "./UserState";
+import {useFonts, arvo} from '@expo-google-fonts/arvo'
 
-const Stack = createStackNavigator()
 import axios from "axios";
 
 axios.defaults.baseURL = "http://82.66.65.201:5555";
@@ -30,14 +27,16 @@ const navigatorTheme = {
     notification: 'rgb(255, 69, 58)',
   },
 }
+const Drawer = createDrawerNavigator()
 
 const App = () => {
   const [logged, setLogged] = React.useState(false);
+  useFonts({arvo});
 
   useEffect(() => {
     setLogged( async () => {
-       try {
-         const token = JSON.parse(await AsyncStorage.getItem('user')).token;
+      try {
+        const token = JSON.parse(await AsyncStorage.getItem('user')).token;
         setLogged(token != null ? true : false);
       } catch(e) {
         // error reading value
@@ -51,13 +50,13 @@ const App = () => {
         {({state}) => {
           return (
             <NavigationContainer theme={navigatorTheme}>
-              <Stack.Navigator>
-                {logged != true ? (<Stack.Screen name="login" component={Auth} />) : null }
-                <Stack.Screen name="navigate" component={Navigate} />
-                <Stack.Screen name="logs" component={Logs} />
-                <Stack.Screen name="manage site" component={ManageSite} />
-                <Stack.Screen name="performance" component={Performance} />
-              </Stack.Navigator>
+              <Drawer.Navigator>
+                {logged != true ? (<Drawer.Screen name="login" component={Auth} />) : null }
+                <Drawer.Screen name="navigate" component={Navigate} />
+                <Drawer.Screen name="logs" component={Logs} />
+                <Drawer.Screen name="manage site" component={ManageSite} />
+                <Drawer.Screen name="performance" component={Performance} />
+              </Drawer.Navigator>
               <StatusBar style="auto" />
             </NavigationContainer>
           )

@@ -1,8 +1,8 @@
 import React, {useContext, useState} from 'react'
 import { ActivityIndicator, View, StyleSheet, Text, TextInput, Pressable } from 'react-native'
-import color from '../../assets/color'
-import font from '../../assets/font'
-import {UserContext} from '../../UserContext'
+import {UserContext} from '../UserContext'
+import color from '../assets/color'
+import font from '../assets/font'
 
 const Auth = ({ navigation }) => {
   const {signIn} = React.useContext(UserContext);

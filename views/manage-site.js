@@ -1,10 +1,9 @@
 import React, {useEffect} from 'react'
 import { View, StyleSheet, Text, Pressable } from 'react-native'
-import color from '../../assets/color'
-import font from '../../assets/font'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import {useFonts, Arvo} from '@expo-google-fonts/arvo'
+import color from '@assets/color'
+import font from '@assets/font'
 
 async function getServiceDatabase(token=null) {
   return await axios.get('/database',
