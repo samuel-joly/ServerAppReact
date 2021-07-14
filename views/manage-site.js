@@ -1,120 +1,104 @@
-import React, {useEffect} from 'react'
-import { View, StyleSheet, Text, Pressable } from 'react-native'
+import React, {useEffect, useContext} from 'react'
+import {UserContext} from '../UserContext'
+import { Dimensions, View, StyleSheet, Text, Pressable } from 'react-native'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import color from '@assets/color'
 import font from '@assets/font'
 
-async function getServiceDatabase(token=null) {
-  return await axios.get('/database',
-                         {
-                           headers: {
-                             'Content-Type': 'application/json',
-                             Authorization: 'Bearer'+ token ? token : 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFkbWluaXN0cmF0b3IiLCJleHAiOjE2Mjg3MDcyNzd9.0rEldusQS_K71m9ycUMN4z2vNZnO9HYymXBcuy4_ins'
-                           },
-                         });
-}
-async function getToken() {
-  return JSON.parse(await AsyncStorage.getItem('user')).token;
-}
-
 
 const ManageSite = ({ navigation }) => {
   const [services, setServices] = React.useState([]);
   const [refresher, setRefresher] = React.useState(false);
+  const {state} = useContext(UserContext);
 
   useEffect(() => {
+    async function getServiceDatabase(token) {
+      if(token == null) {
+        throw "No token givent"
+      }
+      return await axios.get(
+        '/database',
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer '+ token
+          },
+        });
+    }
+
     try {
-      const token = getToken();
-      getServiceDatabase(token).then((data) => setServices(data.data.database));
+      getServiceDatabase(state.token).then((service) => {
+        setServices(service.data.database);
+      })
     } catch (e) {
       console.log(e)
     }
-
   }, [])
 
-  const behaviors = {
-    navigate: {
-      logs() {
-        navigation.navigate('logs')
-      },
-      performance() {
-        navigation.navigate('performance')
-      },
-      manageSite() {
-        navigation.navigate('manageSite')
-      },
-    },
-  }
 
   return (
-    <View style={styles.container}>
-      { services.map((value, key) =>  {
-        return (
-          <View key={key} style={styles.services}>
-            <Text style={styles.individual_service}>{value.database_name}</Text>
-            <Pressable onPress={() => navigation.navigate('Service-Database')} style={styles.databases}>
-              <Text style={styles.database_service}>Database</Text>
-            </Pressable>
-          </View>
-        )
-      }) }
+    <View
+      style={[
+        styles.main,
+        {
+          height: Dimensions.get('window').height,
+          maxHeight: Dimensions.get('window').height,
+        },
+      ]}
+    >
+      <View style={styles.container}>
+        { services.map((value, key) =>  {
+          return (
+            <View style={styles.service}key={key} >
+              <Text style={styles.serviceName}>{value.database_name}</Text>
+              <Pressable style={styles.databaseBtn} onPress={() => navigation.navigate('service database', {database : value.database_name})} >
+            <Text style={styles.databaseName}>Database</Text>
+              </Pressable>
+            </View>
+          )
+        }) }
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  main :{
     width: '100%',
     backgroundColor: color.primary,
     alignItems: 'center',
-    justifyContent: 'flex-start',
-    padding:20
-  },
-  services:{
-    flex: 1,
-    flexDirection:'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    width : '100%',
-    borderRadius: 4,
-    maxHeight: '55px',
-    backgroundColor: color['primary-darker-1'],
-    padding: '10px',
-  },
-  individual_service:{
-    fontSize: 30,
-    color: 'white',
-    marginRight:'20px',
-  },
-  database:{
-    flex:1,
-    justifyContent:'center',
-    alignItems:'center'
-  },
-  database_service: {
-    padding:'4px',
-    fontSize: 20,
-    color: 'white',
-    marginRight:'20px',
-    borderRadius: 4,
-    backgroundColor:color['primary-darker-2']
-  },
-  button: {
-    height: 50,
-    width: 300,
-    borderRadius: 4,
-    backgroundColor: color.ternary,
-    alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 25,
   },
-  buttonText: {
-    fontSize: 24,
-    color: color['text-dark'],
-    fontFamily: font.main,
+  container:{
+    flexDirection:"column",
+    padding:5,
+    justifyContent:"flex-start",
+    alignItems:"center"
   },
+  service :{
+    backgroundColor:color.secondary,
+    padding:4,
+    marginBottom:4,
+    borderRadius:4,
+    width: Dimensions.get('window').width * 0.9
+  },
+  serviceName:{
+    color:color['text-light'],
+    fontSize: 22
+  },
+  databaseBtn: {
+    backgroundColor:color.ternary,
+    borderRadius:4,
+    width: 80,
+    marginTop:5
+  },
+  databaseName:{
+    color:color['text-dark'],
+    fontSize:15,
+    textAlign:"center",
+
+  }
 })
 
 export default ManageSite

@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import color from './assets/color'
-import {Logs, Auth, Navigate, ManageSite, Performance} from 'views/'
+import {Logs, Auth, Navigate, ManageSite, Performance, ServiceDatabase} from 'views/'
 import { UserContext } from "./UserContext";
 import { UserState } from "./UserState";
 import {useFonts, arvo} from '@expo-google-fonts/arvo'
@@ -31,6 +31,7 @@ const Drawer = createDrawerNavigator()
 
 const App = () => {
   const [logged, setLogged] = React.useState(false);
+
   useFonts({arvo});
 
   useEffect(() => {
@@ -38,6 +39,7 @@ const App = () => {
       try {
         const token = JSON.parse(await AsyncStorage.getItem('user')).token;
         setLogged(token != null ? true : false);
+        UserState.setToken();
       } catch(e) {
         // error reading value
       }
@@ -47,12 +49,13 @@ const App = () => {
   return (
     <UserState>
       <UserContext.Consumer>
-        {({state}) => {
+        {(state) => {
           return (
             <NavigationContainer theme={navigatorTheme}>
               <Drawer.Navigator>
                 {logged != true ? (<Drawer.Screen name="login" component={Auth} />) : null }
                 <Drawer.Screen name="navigate" component={Navigate} />
+                <Drawer.Screen name="service database" component={ServiceDatabase} />
                 <Drawer.Screen name="logs" component={Logs} />
                 <Drawer.Screen name="manage site" component={ManageSite} />
                 <Drawer.Screen name="performance" component={Performance} />

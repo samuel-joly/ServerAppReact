@@ -37,7 +37,6 @@ const Auth = ({ navigation }) => {
                   setSigningin(false);
                   navigation.navigate('navigate');
                 } catch (e){
-                  console.log(e.response)
                   setUsernameError(e.response.data.messages.errors[0]?.username);
                   setPasswordError(e.response.data.messages.errors[0]?.password);
                   setSigningin(false);

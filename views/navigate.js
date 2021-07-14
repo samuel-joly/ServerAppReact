@@ -2,8 +2,20 @@ import React from 'react'
 import { View, StyleSheet, Text, Pressable } from 'react-native'
 import color from '@assets/color'
 import font from '@assets/font'
+import {UserContext} from '../UserContext'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {RESTOK} from '../type'
 
 const Navigate = ({ navigation }) => {
+  const {state, setToken} = React.useContext(UserContext);
+
+ React.useEffect(() => {
+   async function setTok() {
+     await setToken()
+   }
+   setTok();
+ }, [])
+
   const behaviors = {
     navigate: {
       logs() {
@@ -22,7 +34,7 @@ const Navigate = ({ navigation }) => {
     <View style={styles.container}>
       <Pressable onPress={behaviors.navigate.logs}>
         <View style={styles.button}>
-          <Text style={styles.buttonText}>Show logs</Text>
+    <Text style={styles.buttonText}>Show logs</Text>
         </View>
       </Pressable>
 

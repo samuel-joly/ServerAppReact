@@ -6,16 +6,13 @@ export function UserReducer(prevState, { type, data }) {
       return {
         ...prevState,
         token: data.token,
-        isLoading: false,
       };
     case SIGNIN:
       return {
         ...prevState,
-        isSignout: false,
         userData: {
           email: data.user.email,
           username: data.user.username,
-          avatar: data.user.avatar,
         },
         token: data.token,
       };
@@ -23,7 +20,6 @@ export function UserReducer(prevState, { type, data }) {
       return {
         ...prevState,
         userData: null,
-        isSignout: true,
         token: null,
       };
   }

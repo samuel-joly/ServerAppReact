@@ -1,19 +1,17 @@
-import React from "react";
-import { SIGNIN, SIGNOUT } from "./type";
 import { UserReducer } from "./reducers/UserReducer";
+import { SIGNIN, SIGNOUT, RESTOK } from "./type";
 import { UserContext } from "./UserContext";
+import React from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 export function UserState(props) {
 	const [state, dispatch] = React.useReducer(UserReducer, {
 		userData: {
-			email: "PasConnecté@PasdeCompte.null",
-			username: "Vous n'êtes pas connecté",
-			token: null,
+			email: null,
+			username: null,
 		},
-		isLoading: true,
-		isSignout: true,
+		token: null,
 	});
 
 	async function setDataToStorage(data,key) {
@@ -29,11 +27,10 @@ export function UserState(props) {
 				username:email,
 				password:password,
 			},
-            headers: {
-                "Content-Type":"application/json",
-            }
+			headers: {
+				"Content-Type":"application/json",
+			}
 		});
-        console.log(data)
 		dispatch({ type: SIGNIN, data});
 		setDataToStorage(data, "user");
 	}
@@ -43,9 +40,16 @@ export function UserState(props) {
 		await AsyncStorage.removeItem("user");
 	}
 
-	return (
-		<UserContext.Provider value={{ signIn, signOut, state, dispatch }}>
-			{props.children}
-		</UserContext.Provider>
-	);
-}
+	async function setToken() {
+			const token = JSON.parse(await AsyncStorage.getItem('user'));
+			if(token != null) {
+				dispatch({type:RESTOK, data:token})
+			}
+		}
+
+		return (
+			<UserContext.Provider value={{ setToken, signIn, signOut, state, dispatch }}>
+			  {props.children}
+		    </UserContext.Provider>
+	    );
+    }
