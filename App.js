@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar'
 import React, { useEffect, useState, Text }from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createDrawerNavigator } from '@react-navigation/drawer'
+import { createStackNavigator } from '@react-navigation/stack';
 import color from './assets/color'
 import {Logs, Auth, Navigate, ManageSite, Performance, ServiceDatabase} from 'views/'
 import { UserContext } from "./UserContext";
@@ -27,7 +27,7 @@ const navigatorTheme = {
     notification: 'rgb(255, 69, 58)',
   },
 }
-const Drawer = createDrawerNavigator()
+const Stack = createStackNavigator()
 
 const App = () => {
   const [logged, setLogged] = React.useState(false);
@@ -52,14 +52,14 @@ const App = () => {
         {(state) => {
           return (
             <NavigationContainer theme={navigatorTheme}>
-              <Drawer.Navigator>
-                {logged != true ? (<Drawer.Screen name="login" component={Auth} />) : null }
-                <Drawer.Screen name="navigate" component={Navigate} />
-                <Drawer.Screen name="service database" component={ServiceDatabase} />
-                <Drawer.Screen name="logs" component={Logs} />
-                <Drawer.Screen name="manage site" component={ManageSite} />
-                <Drawer.Screen name="performance" component={Performance} />
-              </Drawer.Navigator>
+              <Stack.Navigator>
+                {logged != true ? (<Stack.Screen name="login" component={Auth} />) : null }
+                <Stack.Screen name="navigate" component={Navigate} />
+                <Stack.Screen name="service database" component={ServiceDatabase} />
+                <Stack.Screen name="logs" component={Logs} />
+                <Stack.Screen name="manage site" component={ManageSite} />
+                <Stack.Screen name="performance" component={Performance} />
+              </Stack.Navigator>
               <StatusBar style="auto" />
             </NavigationContainer>
           )
