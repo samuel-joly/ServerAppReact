@@ -58,7 +58,7 @@ const App = () => {
                 <Stack.Screen name="service database" component={ServiceDatabase} />
                 <Stack.Screen name="logs" component={Logs} />
                 <Stack.Screen name="manage site" component={ManageSite} />
-                <Stack.Screen name="performance" component={Performance} />
+                <Stack.Screen name="performance" component={Performance}/>
               </Stack.Navigator>
               <StatusBar style="auto" />
             </NavigationContainer>

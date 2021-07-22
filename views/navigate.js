@@ -34,7 +34,7 @@ const Navigate = ({ navigation }) => {
     <View style={styles.container}>
       <Pressable onPress={behaviors.navigate.logs}>
         <View style={styles.button}>
-    <Text style={styles.buttonText}>Show logs</Text>
+          <Text style={styles.buttonText}>Show logs</Text>
         </View>
       </Pressable>
 

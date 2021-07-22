@@ -52,7 +52,7 @@ const ManageSite = ({ navigation }) => {
           return (
             <View style={styles.service}key={key} >
               <Text style={styles.serviceName}>{value.database_name}</Text>
-              <Pressable style={styles.databaseBtn} onPress={() => navigation.navigate('service database', {database : value.database_name})} >
+              <Pressable style={styles.databaseBtn} onPress={() => navigation.navigate('service database', {database : value.database_name, title: value.database_name+" tables"})} >
             <Text style={styles.databaseName}>Database</Text>
               </Pressable>
             </View>
