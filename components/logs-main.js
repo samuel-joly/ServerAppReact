@@ -6,16 +6,26 @@ import LogsDetails from '@components/logs-details'
 import LogsList from '@components/logs-list'
 import axios from 'axios'
 import Constants from 'expo-constants'
+import {UserContext} from '../UserContext'
 
 const LogsMain = ({ navigation }) => {
+  const {state} = React.useContext(UserContext);
   const [selectedLog, setSelectedLog] = useState(null)
   const [logs, setLogs] = useState(null)
 
   useEffect(() => {
-    const backendUrl = Constants.manifest.extra.backendUrl
-    axios
-      .get(`${backendUrl}/log`)
-      .then((response) => {
+    async function getLogs() {
+      return await axios({
+        method:"get",
+        url:"log",
+        headers:{
+          "Content-Type":"application/json",
+          "Authorization":"Bearer "+state.token
+        }
+      })
+    }
+    getLogs().then((response) => {
+      console.log(response.data.data)
         setLogs(response.data)
       })
       .catch((error) => error)

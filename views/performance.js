@@ -2,7 +2,7 @@ import React from 'react'
 import { Dimensions,View, StyleSheet, Text, Pressable, ScrollView } from 'react-native'
 import color from '@assets/color'
 import font from '@assets/font'
-import {LineChart} from 'react-native-chart-kit';
+import {LineChart, BarChart} from 'react-native-chart-kit';
 import axios from 'axios';
 import {UserContext} from '../UserContext'
 
@@ -10,6 +10,10 @@ const Performance = ({ navigation }) => {
 
   const {state} = React.useContext(UserContext);
   const [visit, setVisit] = React.useState([0,0,0,0,0,0,0,0,0,0,0,0]);
+  const [FirefoxVisit, setFirefoxVisit] = React.useState(0);
+  const [ChromeVisit, setChromeVisit] = React.useState(0);
+  const [EdgeVisit, setEdgeVisit] = React.useState(0);
+  const [SafariVisit, setSafariVisit] = React.useState(0);
   const [services, setService] = React.useState("visit");
 
   React.useEffect(()=>{
@@ -28,8 +32,28 @@ const Performance = ({ navigation }) => {
       })
     }
 
+    async function useragent(browser) {
+      return await axios({
+        "method":"get",
+        "url":"log/stat/useragent",
+        "params":{
+          "service":"portfolio_log",
+          "browser": browser
+        },
+        headers:{
+          "Content-Type":"application/json",
+          "Authorization":"Bearer "+state.token
+        }
+      })
+    }
+
     try {
-      logs().then((data) => {console.log(data.data.data);setVisit(data.data.data);})
+      logs().then((data) => {setVisit(data.data.data);})
+      useragent("Firefox").then((data) => {setFirefoxVisit(data.data.data[0]["count(user_agent)"])})
+      useragent("Chrome").then((data) => {setChromeVisit( data.data.data[0]["count(user_agent)"])})
+      useragent("Safari").then((data) => {setSafariVisit( data.data.data[0]["count(user_agent)"])})
+      useragent("Edge").then((data) => {setEdgeVisit(data.data.data[0]["count(user_agent)"])})
+
     } catch (e) {
       console.log(e, service)
     }
@@ -45,7 +69,7 @@ const Performance = ({ navigation }) => {
           <Text style={{color:'#ffffff'}}>Erreures</Text>
         </Pressable>
       </View>
-      <ScrollView horizontal={true}>
+      <ScrollView style={{flex:1,heigh:10}} horizontal={true}>
         <View style={styles.container}>
           <LineChart
             data={{
@@ -85,6 +109,32 @@ const Performance = ({ navigation }) => {
         </View>
       </ScrollView>
 
+    <View style={styles.container}>
+      <Text style={{fontSize:25, color:'#ffffff', textAlign:"center"}}>Browser visit</Text>
+        <BarChart
+          data={{labels:["Firefox", "Chrome", "Safari", "Edge"], datasets: [{data : [FirefoxVisit, ChromeVisit, SafariVisit, EdgeVisit]}]}}
+          width={Dimensions.get("window").width * 0.97 }
+          height={220}
+          yAxisLabel="$"
+          chartConfig={{
+            backgroundColor:color.ternary,
+            backgroundGradientFrom: color.primary,
+            backgroundGradientTo: color.secondary,
+            decimalPlaces: 2, // optional, defaults to 2dp
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            style: {
+              borderRadius: 16
+            },
+            propsForDots: {
+              r: "6",
+              strokeWidth: "2",
+              stroke: "#ffa726"
+            }
+          }}
+        />
+
+      </View>
     </View>
   )
 }
@@ -105,6 +155,8 @@ const styles = StyleSheet.create({
   },
   topContainer:{
     flex:1,
+    justifyContent:"flex-start",
+    alignContent:"center",
     backgroundColor: color.primary,
   },
   container: {

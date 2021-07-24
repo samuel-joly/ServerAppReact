@@ -8,7 +8,6 @@ import color from './assets/color'
 import {Logs, Auth, Navigate, ManageSite, Performance, ServiceDatabase} from 'views/'
 import { UserContext } from "./UserContext";
 import { UserState } from "./UserState";
-import {useFonts, arvo} from '@expo-google-fonts/arvo'
 
 import axios from "axios";
 
@@ -31,8 +30,6 @@ const Stack = createStackNavigator()
 
 const App = () => {
   const [logged, setLogged] = React.useState(false);
-
-  useFonts({arvo});
 
   useEffect(() => {
     setLogged( async () => {
